@@ -5,4 +5,4 @@
 - bulls and cows: https://hyperskill.org/projects/53
 - blockchain with java: https://hyperskill.org/projects/50
 - cinema room manager: https://hyperskill.org/projects/133
--sorting tool with java:  https://hyperskill.org/projects/45
+- sorting tool with java:  https://hyperskill.org/projects/45
