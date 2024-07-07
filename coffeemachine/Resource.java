@@ -1,8 +1,8 @@
 package coffeemachine;
 
 class Resource {
-    public int value;
-    public String name;
+    private int value;
+    private String name;
 
     public int getValue() {
         return value;
@@ -19,11 +19,11 @@ class Resource {
         this.name = name;
     }
 
-    public Resource fill(int value) {
-        return new Resource(this.value + value, this.name);
+    public void fill(int value) {
+        this.value = this.value + value;
     }
 
-    public Resource take() {
-        return new Resource(0, this.name);
+    public void take() {
+        this.value = 0;
     }
 }

@@ -20,6 +20,7 @@ class Inventory {
         this.milk.checkResource(drink.milk());
         this.water.checkResource(drink.water());
         this.cups.checkResource(drink.cups());
+
         return new Inventory(
                 this.beans.getValue() - drink.beans(),
                 this.milk.getValue() - drink.milk(),

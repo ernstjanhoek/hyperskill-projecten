@@ -15,10 +15,15 @@ Resource.
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
         Inventory startingInventory = new Inventory(120, 540, 400, 9, 550);
+
         final Drink cappuccino = new Drink(CAPPU_BEANS, CAPPU_WATER, CAPPU_MILK, CAPPU_COST, 1);
+
         final Drink latte = new Drink(LATTE_BEANS, LATTE_WATER, LATTE_MILK, LATTE_COST, 1);
+
         final Drink espresso = new Drink(ESPR_BEANS, ESPR_WATER, 0, ESPR_COST, 1);
+
         CoffeeMachine coffeeMachine = new CoffeeMachine(startingInventory);
         while (coffeeMachine.isPoweredOn()) {
             System.out.println("Write action (buy, fill, take, remaining, exit):");
@@ -27,22 +32,11 @@ public class Main {
                 case REMAINING -> System.out.println(coffeeMachine.remainingMessage());
                 case BUY -> {
                     System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:");
-                    String buyMenuString = scanner.next();
-                    buyMenuEnum buyMenuOption = buyMenuEnum.fromStr(buyMenuString);
                     try {
-                        switch (buyMenuOption) {
-                            case CAPPUCCINO -> {
-                                coffeeMachine.inventory = coffeeMachine.inventory.update(cappuccino);
-                                System.out.println("I have enough resources, making you a coffee!");
-                            }
-                            case LATTE -> {
-                                coffeeMachine.inventory = coffeeMachine.inventory.update(latte);
-                                System.out.println("I have enough resources, making you a coffee!");
-                            }
-                            case ESPRESSO -> {
-                                coffeeMachine.inventory = coffeeMachine.inventory.update(espresso);
-                                System.out.println("I have enough resources, making you a coffee!");
-                            }
+                        switch (buyMenuEnum.fromStr(scanner.next()))  {
+                            case CAPPUCCINO -> coffeeMachine.make(cappuccino);
+                            case LATTE ->  coffeeMachine.make(latte);
+                            case ESPRESSO -> coffeeMachine.make(espresso);
                             case BACK -> {}
                             default -> throw new Exception("invalid selection");
                         }
@@ -50,26 +44,13 @@ public class Main {
                         System.out.println(e.getMessage());
                     }
                 }
-                case FILL -> {
-                    System.out.println("Write how many ml of water you want to add:");
-                    coffeeMachine.inventory.water = coffeeMachine.inventory.water.fill(scanner.nextInt());
-                    System.out.println("Write how many ml of milk you want to add:");
-                    coffeeMachine.inventory.milk = coffeeMachine.inventory.milk.fill(scanner.nextInt());
-                    System.out.println("Write how many grams of coffee beans you want to add:");
-                    coffeeMachine.inventory.beans = coffeeMachine.inventory.beans.fill(scanner.nextInt());
-                    System.out.println("Write how many disposable cups you want to add:");
-                    coffeeMachine.inventory.cups = coffeeMachine.inventory.cups.fill(scanner.nextInt());
-                }
-                case TAKE -> {
-                    System.out.println("I gave you $" + coffeeMachine.inventory.money.getValue());
-                    coffeeMachine.inventory.money = coffeeMachine.inventory.money.take();
-                }
+                case FILL -> coffeeMachine.fillFromInput(scanner);
+                case TAKE -> coffeeMachine.takeMoney();
                 case EXIT -> coffeeMachine.powerOff();
-                default -> {
-                }
             }
         }
     }
+
     enum mainMenuEnum {
         REMAINING, BUY, FILL, TAKE, EXIT, INVALID;
         static mainMenuEnum fromStr(String input) {
@@ -80,8 +61,10 @@ public class Main {
             }
         }
     }
+
     enum buyMenuEnum {
         ESPRESSO, LATTE, CAPPUCCINO, BACK, INVALID;
+
         static buyMenuEnum fromStr(String input) {
             if ("back".equals(input)) {
                 return matchInput(input);
@@ -93,6 +76,7 @@ public class Main {
                 return buyMenuEnum.INVALID;
             }
         }
+
         private static buyMenuEnum matchInput(int input) {
             return switch (input) {
                 case 1 -> buyMenuEnum.ESPRESSO;
@@ -101,6 +85,7 @@ public class Main {
                 default -> buyMenuEnum.INVALID;
             };
         }
+
         private static buyMenuEnum matchInput(String input) {
             if ("back".equals(input)) {
                 return buyMenuEnum.BACK;
@@ -109,4 +94,3 @@ public class Main {
         }
     }
 }
-
