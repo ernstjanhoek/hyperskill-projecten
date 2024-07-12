@@ -1,4 +1,4 @@
-package battleship;
+package battleship2;
 
 public final class Coordinate implements Comparable<Coordinate> {
     private final int x;

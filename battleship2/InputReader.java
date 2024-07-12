@@ -1,4 +1,4 @@
-package battleship;
+package battleship2;
 
 import java.util.Arrays;
 import java.util.InputMismatchException;

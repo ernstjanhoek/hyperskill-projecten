@@ -1,4 +1,4 @@
-package battleship.exceptions;
+package battleship2.exceptions;
 
 public final class IllegalShipPlacementException extends Exception {
     public IllegalShipPlacementException() {

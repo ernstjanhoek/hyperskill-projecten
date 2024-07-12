@@ -1,6 +1,8 @@
-package battleship;
+package battleship2;
 
-import battleship.exceptions.IllegalShipPlacementException;
+import battleship2.exceptions.IllegalShipPlacementException;
+import battleship2.exceptions.WrongShipLengthException;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -10,6 +12,10 @@ public final class Player {
     private final String name;
     private final Coordinate[][] board;
     private int health;
+
+    public boolean hasFloatingShips() {
+        return health > 0;
+    }
 
     public Player(String name, int size) {
         this.name = name;
@@ -43,8 +49,10 @@ public final class Player {
         }
     }
 
-    public void placeShip(Ship ship) throws IllegalShipPlacementException {
-        Coordinate[] coordinates = ship.getShipCoordinates();
+    public void placeShip(Ship ship, Coordinate[] coordinates) throws IllegalShipPlacementException, WrongShipLengthException {
+        if (ship.getSize() != coordinates.length) {
+            throw new WrongShipLengthException("The ship's length does not match the number of coordinates");
+        }
         for (Coordinate coord: coordinates) {
             if (hasNeighbourShip(coord)) throw new IllegalShipPlacementException();
         }

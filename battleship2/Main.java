@@ -1,10 +1,10 @@
-package battleship;
+package battleship2;
 
-import battleship.exceptions.IllegalShipPlacementException;
-import battleship.exceptions.WrongShipLengthException;
+import battleship2.exceptions.IllegalShipPlacementException;
+import battleship2.exceptions.WrongShipLengthException;
 
-import static battleship.Player.DisplayOption.FOW;
-import static battleship.Player.DisplayOption.OPEN;
+import static battleship2.Player.DisplayOption.FOW;
+import static battleship2.Player.DisplayOption.OPEN;
 
 import java.util.InputMismatchException;
 
@@ -19,11 +19,11 @@ public final class Main {
         player2 = new Player("Player 2", 10);
 
         Ship[] ships = {
-                new Ship("Aircraft Carrier", new Coordinate[5]),
-                new Ship("Battleship", new Coordinate[4]),
-                new Ship("Submarine", new Coordinate[3]),
-                new Ship("Cruiser", new Coordinate[3]),
-                new Ship("Destroyer", new Coordinate[2])
+                new Ship("Aircraft Carrier", 5),
+                new Ship("Battleship", 4),
+                new Ship("Submarine", 3),
+                new Ship("Cruiser", 3),
+                new Ship("Destroyer", 3)
         };
 
         placeShips(ships.clone(), getActivePlayer());
@@ -32,8 +32,7 @@ public final class Main {
         placeShips(ships, getActivePlayer());
         switchActivePlayer();
 
-        boolean isRunning = true;
-        while (isRunning) {
+        while (getActivePlayer().hasFloatingShips()) {
             System.out.println(getOtherPlayer().display(FOW));
             System.out.println("---------------------");
             System.out.println(getActivePlayer().display(OPEN));
@@ -44,11 +43,9 @@ public final class Main {
                             case DAMAGED -> "You hit a ship!";
                             case MISSED -> "You missed!";
                             case SANK -> "You sank a ship!";
-                            case GAME_OVER -> {
-                                isRunning = false;
-                                yield "You sank the last ship. You won. Congratulations!";
-                            }
-                        });
+                            case GAME_OVER -> "You sank the last ship. You won. Congratulations!";
+                        }
+                );
                 switchActivePlayer();
             } catch (InputMismatchException | IllegalArgumentException e) {
                 System.out.printf("%s Try again: ", e.getMessage());
@@ -77,20 +74,19 @@ public final class Main {
     }
 
     private static void placeShips(Ship[] ships, Player player) {
-        System.out.printf("%s, place your ships on the game field", player.getName());
+        System.out.printf("%s, place your ships on the game field\n", player.getName());
         for (Ship ship : ships) {
             System.out.println(player.display(OPEN));
             System.out.printf("Enter the coordinates of the %s (%d cells)\n", ship.getName(), ship.getSize());
             boolean shipPlaced = false;
             while (!shipPlaced) {
                 try {
-                    ship.setShipCoordinates(InputReader.readCoordinates());
-                    player.placeShip(ship);
+                    player.placeShip(ship, InputReader.readCoordinates());
                     shipPlaced = true;
                     System.out.println(player.display(OPEN));
                 } catch (IllegalArgumentException | InputMismatchException | WrongShipLengthException |
                          IllegalShipPlacementException e) {
-                    System.out.printf("%s Try again:%n", e.getMessage());
+                    System.out.printf("%s Try again:\n", e.getMessage());
                 }
             }
         }

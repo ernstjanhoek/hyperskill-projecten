@@ -1,4 +1,4 @@
-package battleship;
+package battleship2;
 
 public enum CoordinateState {
         SHIP('O'), SEA('~'), MISS('M'), HIT('X');

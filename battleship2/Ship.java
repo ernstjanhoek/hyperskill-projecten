@@ -1,25 +1,12 @@
-package battleship;
-
-import battleship.exceptions.WrongShipLengthException;
+package battleship2;
 
 public final class Ship {
     private final String name;
-    Coordinate[] coordinates;
+    private final int length;
 
-    public Ship(String name, Coordinate[] coordinates) {
+    public Ship(String name, int length) {
         this.name = name;
-        this.coordinates = coordinates;
-    }
-
-    public void setShipCoordinates(Coordinate[] inputCoords) throws WrongShipLengthException {
-        if (this.coordinates.length != inputCoords.length) {
-            throw new WrongShipLengthException(name);
-        }
-       this.coordinates = inputCoords.clone();
-    }
-
-    public Coordinate[] getShipCoordinates() {
-        return this.coordinates.clone();
+        this.length = length;
     }
 
     public String getName() {
@@ -27,10 +14,10 @@ public final class Ship {
     }
 
     public int getSize() {
-        return this.coordinates.length;
+        return this.length;
     }
 
     public String toString() {
-        return name + ";" + coordinates[0] + ";" + coordinates[coordinates.length-1];
+        return name + ";" + length;
     }
 }
