@@ -2,10 +2,8 @@ package battleship2;
 
 import battleship2.exceptions.IllegalShipPlacementException;
 import battleship2.exceptions.WrongShipLengthException;
-
 import static battleship2.Player.DisplayOption.FOW;
 import static battleship2.Player.DisplayOption.OPEN;
-
 import java.util.InputMismatchException;
 
 
@@ -26,7 +24,7 @@ public final class Main {
                 new Ship("Destroyer", 3)
         };
 
-        placeShips(ships.clone(), getActivePlayer());
+        placeShips(ships, getActivePlayer());
         switchActivePlayer();
 
         placeShips(ships, getActivePlayer());
