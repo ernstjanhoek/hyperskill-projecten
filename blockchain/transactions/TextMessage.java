@@ -1,4 +1,4 @@
-package blockchain.transactions;
+package transactions;
 
 import java.security.KeyPair;
 import java.security.PublicKey;

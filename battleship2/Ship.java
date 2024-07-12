@@ -1,8 +1,8 @@
-package battleship2;
+package battleship;
 
-import battleship2.exceptions.WrongShipLengthException;
+import battleship.exceptions.WrongShipLengthException;
 
-public class Ship {
+public final class Ship {
     private final String name;
     Coordinate[] coordinates;
 

@@ -1,6 +1,6 @@
-package battleship2;
+package battleship;
 
-public class Coordinate {
+public final class Coordinate implements Comparable<Coordinate> {
     private final int x;
     private final int y;
     private CoordinateState value;
@@ -29,7 +29,7 @@ public class Coordinate {
             throw new IllegalArgumentException("Error! You entered the wrong coordinates");
         }
         this.x = Integer.parseInt(coordinateString.substring(1)) - 1;
-        this.y = (coordinateString.charAt(0) - 'A');
+        this.y = coordinateString.charAt(0) - 'A';
     }
 
     public void setCoordValue(CoordinateState value) {
@@ -53,4 +53,12 @@ public class Coordinate {
         return (char) (x + 'A') + "" + (y + 1);
     }
 
+    @Override
+    public int compareTo(Coordinate other) {
+        if (y != other.getY()) {
+            return Integer.compare(y, other.getY());
+        } else {
+            return Integer.compare(x, other.getX());
+        }
+    }
 }

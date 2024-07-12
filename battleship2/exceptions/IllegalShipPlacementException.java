@@ -1,6 +1,6 @@
-package battleship2.exceptions;
+package battleship.exceptions;
 
-public class IllegalShipPlacementException extends Exception {
+public final class IllegalShipPlacementException extends Exception {
     public IllegalShipPlacementException() {
         super("Error! You placed it too close to another one.");
     }

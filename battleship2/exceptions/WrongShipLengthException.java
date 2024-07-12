@@ -1,6 +1,6 @@
-package battleship2.exceptions;
+package battleship.exceptions;
 
-public class WrongShipLengthException extends Exception {
+public final class WrongShipLengthException extends Exception {
     public WrongShipLengthException(String name) {
         super("Error! Wrong length of the " + name + "!");
     }

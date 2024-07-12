@@ -1,12 +1,12 @@
-package battleship2;
+package battleship;
 
-import battleship2.exceptions.IllegalShipPlacementException;
+import battleship.exceptions.IllegalShipPlacementException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-public class Player {
+public final class Player {
     private final String name;
     private final Coordinate[][] board;
     private int health;
