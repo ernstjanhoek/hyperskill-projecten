@@ -28,13 +28,13 @@ public final class Main {
         isPlayerOneActive = switchActivePlayer(isPlayerOneActive);
 
         while (getActivePlayer(isPlayerOneActive).hasFloatingShips()) {
-            System.out.println(getOtherPlayer(isPlayerOneActive).display(FOW));
+            System.out.println(getActivePlayer(!isPlayerOneActive).display(FOW));
             System.out.println("---------------------");
             System.out.println(getActivePlayer(isPlayerOneActive).display(OPEN));
             System.out.printf("%s, it's your turn:", getActivePlayer(isPlayerOneActive).getName());
             try {
                 System.out.println(
-                        switch (getOtherPlayer(isPlayerOneActive).shootAt(InputReader.readCoordinate())) {
+                        switch (getActivePlayer(!isPlayerOneActive).shootAt(InputReader.readCoordinate())) {
                             case DAMAGED -> "You hit a ship!";
                             case MISSED -> "You missed!";
                             case SANK -> "You sank a ship!";
@@ -57,11 +57,6 @@ public final class Main {
     static Player getActivePlayer(boolean isPlayerOneActive) {
         if (isPlayerOneActive) return player1;
         else return player2;
-    }
-
-    static Player getOtherPlayer(boolean isPlayerOneActive) {
-        if (isPlayerOneActive) return player2;
-        else return player1;
     }
 
     private static void placeShips(Ship[] ships, Player player) {
