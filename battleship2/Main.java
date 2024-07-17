@@ -1,20 +1,17 @@
 package battleship2;
 
-import battleship2.exceptions.IllegalShipPlacementException;
-import battleship2.exceptions.WrongShipLengthException;
 import static battleship2.Player.DisplayOption.FOW;
 import static battleship2.Player.DisplayOption.OPEN;
 import java.util.InputMismatchException;
 
-
 public final class Main {
     static Player player1;
     static Player player2;
-    static ActivePlayer activePlayer = ActivePlayer.PLAYER_ONE;
 
     public static void main(String[] args) {
         player1 = new Player("Player 1", 10);
         player2 = new Player("Player 2", 10);
+        boolean isPlayerOneActive = true;
 
         Ship[] ships = {
                 new Ship("Aircraft Carrier", 5),
@@ -24,50 +21,46 @@ public final class Main {
                 new Ship("Destroyer", 3)
         };
 
-        placeShips(ships, getActivePlayer());
-        switchActivePlayer();
+        placeShips(ships, getActivePlayer(isPlayerOneActive));
+        isPlayerOneActive = switchActivePlayer(isPlayerOneActive);
 
-        placeShips(ships, getActivePlayer());
-        switchActivePlayer();
+        placeShips(ships, getActivePlayer(isPlayerOneActive));
+        isPlayerOneActive = switchActivePlayer(isPlayerOneActive);
 
-        while (getActivePlayer().hasFloatingShips()) {
-            System.out.println(getOtherPlayer().display(FOW));
+        while (getActivePlayer(isPlayerOneActive).hasFloatingShips()) {
+            System.out.println(getOtherPlayer(isPlayerOneActive).display(FOW));
             System.out.println("---------------------");
-            System.out.println(getActivePlayer().display(OPEN));
-            System.out.printf("%s, it's your turn:", getActivePlayer().getName());
+            System.out.println(getActivePlayer(isPlayerOneActive).display(OPEN));
+            System.out.printf("%s, it's your turn:", getActivePlayer(isPlayerOneActive).getName());
             try {
                 System.out.println(
-                        switch (getOtherPlayer().shootAt(InputReader.readCoordinate())) {
+                        switch (getOtherPlayer(isPlayerOneActive).shootAt(InputReader.readCoordinate())) {
                             case DAMAGED -> "You hit a ship!";
                             case MISSED -> "You missed!";
                             case SANK -> "You sank a ship!";
                             case GAME_OVER -> "You sank the last ship. You won. Congratulations!";
                         }
                 );
-                switchActivePlayer();
+                isPlayerOneActive = switchActivePlayer(isPlayerOneActive);
             } catch (InputMismatchException | IllegalArgumentException e) {
                 System.out.printf("%s Try again: ", e.getMessage());
             }
         }
     }
 
-    enum ActivePlayer {
-        PLAYER_ONE, PLAYER_TWO
-    }
-
-    static void switchActivePlayer() {
+    static boolean switchActivePlayer(boolean isPlayerOneActive) {
         System.out.println("Press enter and pass the move to another player");
         InputReader.pressEnter();
-        activePlayer = activePlayer == ActivePlayer.PLAYER_ONE ? ActivePlayer.PLAYER_TWO : ActivePlayer.PLAYER_ONE;
+        return !isPlayerOneActive;
     }
 
-    static Player getActivePlayer() {
-        if (activePlayer == ActivePlayer.PLAYER_ONE) return player1;
+    static Player getActivePlayer(boolean isPlayerOneActive) {
+        if (isPlayerOneActive) return player1;
         else return player2;
     }
 
-    static Player getOtherPlayer() {
-        if (activePlayer == ActivePlayer.PLAYER_ONE) return player2;
+    static Player getOtherPlayer(boolean isPlayerOneActive) {
+        if (isPlayerOneActive) return player2;
         else return player1;
     }
 
@@ -79,11 +72,9 @@ public final class Main {
             boolean shipPlaced = false;
             while (!shipPlaced) {
                 try {
-                    player.placeShip(ship, InputReader.readCoordinates());
-                    shipPlaced = true;
+                    shipPlaced = player.placeShip(ship, InputReader.readCoordinates());
                     System.out.println(player.display(OPEN));
-                } catch (IllegalArgumentException | InputMismatchException | WrongShipLengthException |
-                         IllegalShipPlacementException e) {
+                } catch (Exception e) {
                     System.out.printf("%s Try again:\n", e.getMessage());
                 }
             }

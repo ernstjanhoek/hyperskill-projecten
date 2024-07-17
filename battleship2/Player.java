@@ -32,24 +32,20 @@ public final class Player {
         int xTarget = coord.getX();
         CoordinateState target = board[yTarget][xTarget].getCoordValue();
         if (target == CoordinateState.SHIP || target == CoordinateState.HIT) {
-            if (target == CoordinateState.SHIP) {
-                health--;
-            }
+            if (target == CoordinateState.SHIP) health--;
+
             board[yTarget][xTarget].setCoordValue(CoordinateState.HIT);
-            if (health == 0) {
-                return ShotResult.GAME_OVER;
-            } else if (isShipSunk(coord)) {
-                return ShotResult.SANK;
-            } else {
-                return ShotResult.DAMAGED;
-            }
+
+            if (health == 0) return ShotResult.GAME_OVER;
+            else if (isShipSunk(coord)) return ShotResult.SANK;
+            else return ShotResult.DAMAGED;
         } else {
             board[yTarget][xTarget].setCoordValue(CoordinateState.MISS);
             return ShotResult.MISSED;
         }
     }
 
-    public void placeShip(Ship ship, Coordinate[] coordinates) throws IllegalShipPlacementException, WrongShipLengthException {
+    public boolean placeShip(Ship ship, Coordinate[] coordinates) throws IllegalShipPlacementException, WrongShipLengthException {
         if (ship.getSize() != coordinates.length) {
             throw new WrongShipLengthException("The ship's length does not match the number of coordinates");
         }
@@ -60,6 +56,7 @@ public final class Player {
             board[coord.getY()][coord.getX()].setCoordValue(CoordinateState.SHIP);
         }
         health += ship.getSize();
+        return true;
     }
 
     public String display(DisplayOption option) {
